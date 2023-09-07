@@ -30,3 +30,14 @@ res.fried
 pwc <- selfesteem %>%
   wilcox_test(score ~ time, paired = TRUE, p.adjust.method = "bonferroni")
 pwc
+
+
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "time")
+ggboxplot(selfesteem, x = "time", y = "score", add = "point") +
+  stat_pvalue_manual(pwc, hide.ns = TRUE) +
+  labs(
+    subtitle = get_test_label(res.fried,  detailed = TRUE),
+    caption = get_pwc_label(pwc)
+  )
